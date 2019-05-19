@@ -10,6 +10,7 @@ import {
   Route,
   Redirect
 } from 'react-router-dom';
+import ReactGA from 'react-ga';
 import {
   CSSTransition,
   TransitionGroup
@@ -23,11 +24,18 @@ class App extends Component {
 
     // Initialize Firebase
     firebase.initializeApp(require('./FirebaseConfig.json'));
+    // Google analytics
+    this.initReactGa();
   }
 
   changePage = (currentPageId) => {
     if (!this.app.landingPages.find(p => p.id === currentPageId) && !this.app.pages.find(p => p.id === currentPageId))
       currentPageId = 1200;
+
+    ReactGA.event({
+      category: 'Question',
+      action: `Load question ${currentPageId}`
+    });
 
     this.props.history.push(`/question/${currentPageId}`);
   };
@@ -49,6 +57,11 @@ class App extends Component {
       return this.app.pages.find(p => p.id === pageId);
     else
       return this.app.landingPages[0];
+  }
+
+  initReactGa = () => {
+    ReactGA.initialize('UA-140389226-1');
+    ReactGA.pageview('/homepage');
   }
 
   render() {
