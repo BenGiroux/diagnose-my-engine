@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import './App.css';
 import Question from './components/Question';
 import { MuiThemeProvider } from "@material-ui/core/styles";
@@ -16,12 +16,12 @@ import {
   TransitionGroup
 } from 'react-transition-group';
 
-class App extends Component {
+class App extends React.Component {
   constructor(props) {
     super(props);
 
+    // Question source
     this.app = require('./Source.json');
-
     // Initialize Firebase
     firebase.initializeApp(require('./FirebaseConfig.json'));
     // Google analytics
@@ -70,7 +70,7 @@ class App extends Component {
         <Switch>
           <Route path='/question/:id' render={(props) => (
             <div className="App">
-              <Question {...props} page={this.getPage(Number(props.match.params.id))} changePage={this.changePage}></Question>
+              <Question page={this.getPage(Number(props.match.params.id))} changePage={this.changePage}></Question>
               <div style={{ padding: '1rem' }}>
                 {!this.app.landingPages.find(p => p.id === Number(props.match.params.id)) &&
                   <div>
