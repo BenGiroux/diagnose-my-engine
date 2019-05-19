@@ -4,7 +4,7 @@ import { withStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import logo from '../fix-it-logo.png';
 
-const styles = theme => ({
+const styles = () => ({
   root: {
     border: '1px solid #e7e7e7',
     padding: '1rem',
@@ -52,35 +52,34 @@ const styles = theme => ({
   }
 });
 
-class Question extends React.Component {
-  render() {
-    const { classes } = this.props;
+function Question(props) {
+  const { classes } = props;
 
-    return (
-      <div>
-        <header className={classes.header}>
-          <div className={classes.logoContainer}>
-            <img src={logo} className={classes.logo} alt='Logo' />
-          </div>
-          <h1 className={classes.title}>Fix It</h1>
-        </header>
-        <div className={classes.root}>
-          <h1 className={classes.heading}>{this.props.page.title}</h1>
-          <p className={classes.p}>{this.props.page.question}</p>
-          <div className={classes.container}>
-            {this.props.page.options != null && this.props.page.options.map(function (value, index) {
-              return <Button onClick={this.props.changePage.bind(this, value.pageLinkId)} key={index} variant="contained" color={value.color} className={classes.button}>{value.label}</Button>
-            }, this)}
-          </div>
+  return (
+    <div>
+      <header className={classes.header}>
+        <div className={classes.logoContainer}>
+          <img src={logo} className={classes.logo} alt='Logo' />
+        </div>
+        <h1 className={classes.title}>Fix It</h1>
+      </header>
+      <div className={classes.root}>
+        <h1 className={classes.heading}>{props.page.title}</h1>
+        <p className={classes.p}>{props.page.question}</p>
+        <div className={classes.container}>
+          {props.page.options != null && props.page.options.map((value, index) => {
+            return <Button onClick={() => props.changePage(value.pageLinkId)} key={index} variant="contained" color={value.color} className={classes.button}>{value.label}</Button>
+          })}
         </div>
       </div>
-    );
-  }
+    </div>
+  );
 }
 
 Question.propTypes = {
   changePage: PropTypes.func.isRequired,
-  classes: PropTypes.object.isRequired
+  classes: PropTypes.object.isRequired,
+  page: PropTypes.object.isRequired
 };
 
 export default withStyles(styles)(Question);
