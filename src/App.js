@@ -1,9 +1,11 @@
 import React from 'react';
 import './App.css';
 import Question from './components/Question';
+import Navigation from './components/Navigation';
 import { MuiThemeProvider } from "@material-ui/core/styles";
 import Theme from "./components/Theme";
-import Button from '@material-ui/core/Button';
+import Header from './components/Header';
+
 import firebase from "firebase";
 import {
   Switch,
@@ -11,10 +13,11 @@ import {
   Redirect
 } from 'react-router-dom';
 import ReactGA from 'react-ga';
-import {
-  CSSTransition,
-  TransitionGroup
-} from 'react-transition-group';
+import Intro from './components/Intro';
+// import {
+//   CSSTransition,
+//   TransitionGroup
+// } from 'react-transition-group';
 
 class App extends React.Component {
   constructor(props) {
@@ -40,10 +43,10 @@ class App extends React.Component {
       category: 'Question',
       action: `Load question ${currentPageId}`
     });
-
+    
     this.setState(prevState => (
       {
-        pageHistory: [...prevState.pageHistory, currentPageId]
+        pageHistory: (!this.app.landingPages.find(p => p.id === currentPageId) && this.app.pages[0].id !== currentPageId) ? [...prevState.pageHistory, currentPageId] : []
       }));
 
     this.props.history.push(`/question/${currentPageId}`);
@@ -85,23 +88,19 @@ class App extends React.Component {
     return (
       <MuiThemeProvider theme={Theme}>
         <Switch>
+          <Route path='/welcome' component={Intro} />
           <Route path='/question/:id' render={(props) => (
             <div className="App">
+              <Header />
               <Question page={this.getPage(Number(props.match.params.id))} changePage={this.changePage}></Question>
-              <div style={{ padding: '1rem' }}>
-                {!this.app.landingPages.find(p => p.id === Number(props.match.params.id)) ?
-                  <div>
-                    {this.state.pageHistory.length ? <Button variant="outlined" onClick={() => this.goBack(Number(props.match.params.id))} style={{ marginRight: '0.2rem' }}>Back</Button> : ''}
-                    <Button variant="outlined" onClick={this.reset}>Reset</Button>
-                  </div>
-                  : ''}
-              </div>
+              {!this.app.landingPages.find(p => p.id === Number(props.match.params.id)) &&
+                <Navigation {...props} showBackBtn={this.state.pageHistory.length} reset={this.reset} goBack={this.goBack}></Navigation>}
             </div>
           )} />
-          <Redirect from="*" to="/question/1" />
+          <Redirect from="*" to="/welcome" />
         </Switch>
       </MuiThemeProvider>
-    );
+    )
   }
 }
 

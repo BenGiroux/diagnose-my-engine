@@ -9,7 +9,7 @@ import App from './App';
 import * as serviceWorker from './serviceWorker';
 
 ReactDOM.render(
-    <BrowserRouter>,
+    <BrowserRouter>
         <Route path="/" component={App} />
     </BrowserRouter>,
     document.getElementById('root')
