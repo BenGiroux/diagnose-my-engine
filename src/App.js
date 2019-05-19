@@ -60,6 +60,10 @@ class App extends React.Component {
   }
 
   reset = () => {
+    this.setState({
+      pageHistory: []
+    });
+
     this.props.history.push(`/question/${this.app.pages[0].id}`);
   }
 
