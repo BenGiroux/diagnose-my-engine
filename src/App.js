@@ -20,6 +20,10 @@ class App extends React.Component {
   constructor(props) {
     super(props);
 
+    this.state = {
+      pageHistory: []
+    }
+
     // Question source
     this.app = require('./Source.json');
     // Initialize Firebase
@@ -37,13 +41,22 @@ class App extends React.Component {
       action: `Load question ${currentPageId}`
     });
 
+    this.setState(prevState => (
+      {
+        pageHistory: [...prevState.pageHistory, currentPageId]
+      }));
+
     this.props.history.push(`/question/${currentPageId}`);
   };
 
-  goBack = (currentPageId) => {
-    let lastPage = this.app.pages.find(p => (p.options || []).find(o => o.pageLinkId === currentPageId));
+  goBack = () => {
+    let newHistory = this.state.pageHistory.slice(0, this.state.pageHistory.length - 1);
 
-    this.props.history.push(`/question/${(lastPage != null) ? lastPage.id : this.app.pages[0].id}`);
+    this.setState({
+      pageHistory: newHistory
+    });
+
+    this.props.history.push(`/question/${(newHistory[newHistory.length - 1] != null) ? newHistory[newHistory.length - 1] : this.app.pages[0].id}`);
   }
 
   reset = () => {
@@ -72,12 +85,12 @@ class App extends React.Component {
             <div className="App">
               <Question page={this.getPage(Number(props.match.params.id))} changePage={this.changePage}></Question>
               <div style={{ padding: '1rem' }}>
-                {!this.app.landingPages.find(p => p.id === Number(props.match.params.id)) &&
+                {!this.app.landingPages.find(p => p.id === Number(props.match.params.id)) ?
                   <div>
-                    <Button variant="outlined" onClick={() => this.goBack(Number(props.match.params.id))} style={{ marginRight: '0.2rem' }}>Back</Button>
+                    {this.state.pageHistory.length ? <Button variant="outlined" onClick={() => this.goBack(Number(props.match.params.id))} style={{ marginRight: '0.2rem' }}>Back</Button> : ''}
                     <Button variant="outlined" onClick={this.reset}>Reset</Button>
                   </div>
-                }
+                  : ''}
               </div>
             </div>
           )} />
