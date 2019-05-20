@@ -1,8 +1,6 @@
 
 :local(.container) {
     display: flex;
-    height: 100%;
-    width: 100%;
     align-items: center;
     justify-content: center;
 }
@@ -15,6 +13,5 @@
 :local(.logo img) {
     height: auto;
     width: 100%;
-    
     max-width: 30rem;
 }
