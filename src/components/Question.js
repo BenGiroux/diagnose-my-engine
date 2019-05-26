@@ -34,7 +34,7 @@ const styles = () => ({
     width: '75%',
     fontWeight: 'lighter',
     overflow: 'auto',
-    maxHeight: '15rem',
+    maxHeight: '12rem',
     paddingRight: '1rem'
   }
 });
