@@ -1,17 +1,12 @@
 
 :local(.container) {
     display: flex;
-    align-items: center;
     justify-content: center;
+    flex-direction: column;
+    height: 100vh;
 }
 
-:local(.logo) {
-    flex: 1;
-    text-align: center;
-}
-
-:local(.logo img) {
+:local(.container img) {
     height: auto;
-    width: 100%;
     max-width: 30rem;
 }

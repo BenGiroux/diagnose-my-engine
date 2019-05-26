@@ -28,11 +28,14 @@ const styles = () => ({
     width: '75%'
   },
   p: {
-    fontSize: '2rem',
+    fontSize: '1.5rem',
     margin: '2rem auto 0',
-    lineHeight: '3rem',
+    lineHeight: '2.5rem',
     width: '75%',
-    fontWeight: 'lighter'
+    fontWeight: 'lighter',
+    overflow: 'auto',
+    maxHeight: '15rem',
+    paddingRight: '1rem'
   }
 });
 
