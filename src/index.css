@@ -5,8 +5,3 @@ html, body {
   font-family: 'Roboto', sans-serif;
   font-size: 2vh;
 }
-
-body {
-  min-height: 100vh;
-  display: flex;
-}

@@ -35,6 +35,22 @@ class App extends React.Component {
     this.initReactGa();
   }
 
+  componentDidMount = () => {
+    this.setViewportHeight();
+
+    // We listen to the resize event
+    window.addEventListener('resize', () => {
+      this.setViewportHeight();
+    });
+  }
+
+  setViewportHeight = () => {
+    // First we get the viewport height and we multiple it by 1% to get a value for a vh unit
+    let vh = window.innerHeight * 0.01;
+    // Then we set the value in the --vh custom property to the root of the document
+    document.documentElement.style.setProperty('--vh', `${vh}px`);
+  }
+
   changePage = (currentPageId) => {
     if (!this.app.landingPages.find(p => p.id === currentPageId) && !this.app.pages.find(p => p.id === currentPageId))
       currentPageId = 1200;
@@ -43,7 +59,7 @@ class App extends React.Component {
       category: 'Question',
       action: `Load question ${currentPageId}`
     });
-    
+
     this.setState(prevState => (
       {
         pageHistory: (!this.app.landingPages.find(p => p.id === currentPageId) && this.app.pages[0].id !== currentPageId) ? [...prevState.pageHistory, currentPageId] : []
