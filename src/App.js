@@ -10,7 +10,8 @@ import firebase from "firebase";
 import {
   Switch,
   Route,
-  Redirect
+  Redirect,
+  withRouter
 } from 'react-router-dom';
 import ReactGA from 'react-ga';
 import Intro from './components/Intro';
@@ -24,7 +25,8 @@ class App extends React.Component {
     super(props);
 
     this.state = {
-      pageHistory: []
+      pageHistory: [],
+      introShown: false
     }
 
     // Question source
@@ -100,24 +102,37 @@ class App extends React.Component {
     ReactGA.pageview('/homepage');
   }
 
+  introShown = () => {
+    this.setState({
+      introShown: true
+    })
+  }
+
   render() {
     return (
       <MuiThemeProvider theme={Theme}>
         <Switch>
-          <Route path='/welcome' component={Intro} />
-          <Route path='/question/:id' render={(props) => (
-            <div className="App">
-              <Header />
-              <Question page={this.getPage(Number(props.match.params.id))} changePage={this.changePage}></Question>
-              {!this.app.landingPages.find(p => p.id === Number(props.match.params.id)) &&
-                <Navigation {...props} showBackBtn={this.state.pageHistory.length} reset={this.reset} goBack={this.goBack}></Navigation>}
-            </div>
-          )} />
-          <Redirect from="*" to="/welcome" />
+          <Route exact path='/' render={() => <Intro {...this.props} firstQuestion={Number(this.app.landingPages[0].id)} introShown={this.introShown.bind(this)} />} />
+          <Route path='/question/:id' render={(props) => {
+            return (
+              this.state.introShown ? (
+                <div className="App">
+                  <Header />
+                  <Question page={this.getPage(Number(props.match.params.id))} changePage={this.changePage}></Question>
+                  {!this.app.landingPages.find(p => p.id === Number(props.match.params.id)) &&
+                    <Navigation {...props} showBackBtn={this.state.pageHistory.length} reset={this.reset} goBack={this.goBack}></Navigation>}
+                </div>
+              ) : (<Redirect to={{
+                pathname: "/",
+                state: { selectedQuestion: Number(props.match.params.id)  }
+              }} />))
+          }} />
+          <Route render={() => <Intro {...this.props} firstQuestion={Number(this.app.landingPages[0].id)} introShown={this.introShown.bind(this)} />} />
         </Switch>
+        
       </MuiThemeProvider>
     )
   }
 }
 
-export default App;
+export default withRouter(App);
