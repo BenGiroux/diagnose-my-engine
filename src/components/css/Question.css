@@ -1,0 +1,24 @@
+
+:local(.question) {
+    flex: 1;
+}
+
+:local(.heading) {
+    margin: 0;
+    font-weight: bold;
+    background-color: #51b848;
+    color: #ffffff;
+    padding: 1rem 0;
+    font-size: 2rem;
+}
+
+:local(.p) {
+    font-size: 1.8rem;
+    margin: 2rem auto 0;
+    line-height: 3rem;
+    width: 75%;
+    font-weight: lighter;
+    overflow: auto;
+    max-height: 20rem;
+    padding-right: 1rem;
+  }
