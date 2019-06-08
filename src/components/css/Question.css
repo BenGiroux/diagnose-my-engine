@@ -13,9 +13,9 @@
 }
 
 :local(.p) {
-    font-size: 1.6rem;
+    font-size: 1.5rem;
     margin: 2rem auto 0;
-    line-height: 2.6rem;
+    line-height: 2.5rem;
     width: 75%;
     font-weight: lighter;
     overflow: auto;
