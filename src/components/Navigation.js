@@ -13,7 +13,8 @@ const styles = () => ({
         fontSize: '2rem',
         flex: 1,
         margin: '0.5rem',
-        fontWeight: 'bold'
+        fontWeight: 'bold',
+        whiteSpace: 'nowrap'
     },
     btnContainer: {
         display: 'flex',
