@@ -38,10 +38,11 @@ class App extends React.Component {
   }
 
   componentDidMount = () => {
-    this.setViewportHeight();
-
-    // We listen to the resize event
     window.addEventListener('resize', () => {
+      this.setViewportHeight();
+    });
+
+    window.addEventListener('load', () => {
       this.setViewportHeight();
     });
   }
@@ -112,24 +113,30 @@ class App extends React.Component {
     return (
       <MuiThemeProvider theme={Theme}>
         <Switch>
-          <Route exact path='/' render={() => <Intro {...this.props} firstQuestion={Number(this.app.landingPages[0].id)} introShown={this.introShown.bind(this)} />} />
+          <Route exact path='/' render={() => {
+            const firstQuestionId = Number(this.app.landingPages[0].id);
+
+            return <Intro {...this.props} firstQuestion={firstQuestionId} introShown={this.introShown.bind(this)} />}
+          } />
           <Route path='/question/:id' render={(props) => {
+            const selectedPage = this.getPage(Number(props.match.params.id));
+            const isLandingPage = this.app.landingPages.findIndex(p => p.id === Number(props.match.params.id)) > -1;
+
             return (
               this.state.introShown ? (
                 <div className="App">
                   <Header />
-                  <Question page={this.getPage(Number(props.match.params.id))} changePage={this.changePage}></Question>
-                  {!this.app.landingPages.find(p => p.id === Number(props.match.params.id)) &&
-                    <Navigation {...props} showBackBtn={this.state.pageHistory.length} reset={this.reset} goBack={this.goBack}></Navigation>}
+                  <Question page={selectedPage}></Question>
+                  <Navigation {...props} landingPage={isLandingPage} options={selectedPage.options} changePage={this.changePage} showBackBtn={this.state.pageHistory.length > 0} reset={this.reset} goBack={this.goBack}></Navigation>
                 </div>
               ) : (<Redirect to={{
                 pathname: "/",
-                state: { selectedQuestion: Number(props.match.params.id)  }
+                state: { selectedQuestion: Number(props.match.params.id) }
               }} />))
           }} />
           <Route render={() => <Intro {...this.props} firstQuestion={Number(this.app.landingPages[0].id)} introShown={this.introShown.bind(this)} />} />
         </Switch>
-        
+
       </MuiThemeProvider>
     )
   }

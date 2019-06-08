@@ -1,21 +1,22 @@
 import React from 'react';
 import styles from './css/Intro.css';
 import logo from '../socket-logo.png';
+import PropTypes from 'prop-types';
 
 class Intro extends React.Component {
-    
+
     componentDidMount() {
         this.props.introShown();
 
         setTimeout(() => {
             let questionId;
 
-            if(this.props.location && this.props.location.state)
+            if (this.props.location && this.props.location.state)
                 questionId = this.props.location.state.selectedQuestion;
             else if (this.props.firstQuestion)
                 questionId = this.props.firstQuestion;
 
-            if(questionId)
+            if (questionId)
                 this.props.history.push(`/question/${questionId}`);
 
         }, 2000)
@@ -31,5 +32,10 @@ class Intro extends React.Component {
         )
     }
 }
+
+Intro.propTypes = {
+    firstQuestion: PropTypes.number.isRequired,
+    introShown: PropTypes.func.isRequired
+};
 
 export default Intro;
