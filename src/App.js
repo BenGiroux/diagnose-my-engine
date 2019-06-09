@@ -42,6 +42,11 @@ class App extends React.Component {
     window.addEventListener('load', () => {
       this.setViewportHeight();
     });
+
+    (window.adsbygoogle = window.adsbygoogle || []).push({
+      google_ad_client: "ca-pub-1885725169510443",
+      enable_page_level_ads: true
+    });
   }
 
   setViewportHeight = () => {
