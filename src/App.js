@@ -5,6 +5,7 @@ import Navigation from './components/Navigation';
 import { MuiThemeProvider } from "@material-ui/core/styles";
 import Theme from "./components/Theme";
 import Header from './components/Header';
+import SwitchWithSlide from './components/SwitchWithSlide';
 
 import firebase from "firebase";
 import {
@@ -15,10 +16,6 @@ import {
 } from 'react-router-dom';
 import ReactGA from 'react-ga';
 import Intro from './components/Intro';
-// import {
-//   CSSTransition,
-//   TransitionGroup
-// } from 'react-transition-group';
 
 class App extends React.Component {
   constructor(props) {
@@ -116,27 +113,29 @@ class App extends React.Component {
           <Route exact path='/' render={() => {
             const firstQuestionId = Number(this.app.landingPages[0].id);
 
-            return <Intro {...this.props} firstQuestion={firstQuestionId} introShown={this.introShown.bind(this)} />}
-          } />
-          <Route path='/question/:id' render={(props) => {
-            const selectedPage = this.getPage(Number(props.match.params.id));
-            const isLandingPage = this.app.landingPages.findIndex(p => p.id === Number(props.match.params.id)) > -1;
-
-            return (
-              this.state.introShown ? (
-                <div className="App">
-                  <Header />
-                  <Question page={selectedPage}></Question>
-                  <Navigation {...props} landingPage={isLandingPage} options={selectedPage.options} changePage={this.changePage} showBackBtn={this.state.pageHistory.length > 0} reset={this.reset} goBack={this.goBack}></Navigation>
-                </div>
-              ) : (<Redirect to={{
-                pathname: "/",
-                state: { selectedQuestion: Number(props.match.params.id) }
-              }} />))
+            return <Intro {...this.props} firstQuestion={firstQuestionId} introShown={this.introShown.bind(this)} />
           }} />
+          
+          <SwitchWithSlide>
+            <Route path='/question/:id' render={(props) => {
+              const selectedPage = this.getPage(Number(props.match.params.id));
+              const isLandingPage = this.app.landingPages.findIndex(p => p.id === Number(props.match.params.id)) > -1;
+
+              return (
+                this.state.introShown ? (
+                  <div className="App">
+                    <Header />
+                    <Question page={selectedPage}></Question>
+                    <Navigation {...props} landingPage={isLandingPage} options={selectedPage.options} changePage={this.changePage} showBackBtn={this.state.pageHistory.length > 0} reset={this.reset} goBack={this.goBack}></Navigation>
+                  </div>
+                ) : (<Redirect to={{
+                  pathname: "/",
+                  state: { selectedQuestion: Number(props.match.params.id) }
+                }} />))
+            }} />
+          </SwitchWithSlide>
           <Route render={() => <Intro {...this.props} firstQuestion={Number(this.app.landingPages[0].id)} introShown={this.introShown.bind(this)} />} />
         </Switch>
-
       </MuiThemeProvider>
     )
   }
