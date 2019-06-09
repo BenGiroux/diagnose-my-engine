@@ -6,7 +6,6 @@ import { MuiThemeProvider } from "@material-ui/core/styles";
 import Theme from "./components/Theme";
 import Header from './components/Header';
 import SwitchWithSlide from './components/SwitchWithSlide';
-import Ad from './components/Ad';
 
 import firebase from "firebase";
 import {
