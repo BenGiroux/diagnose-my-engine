@@ -6,6 +6,7 @@ import { MuiThemeProvider } from "@material-ui/core/styles";
 import Theme from "./components/Theme";
 import Header from './components/Header';
 import SwitchWithSlide from './components/SwitchWithSlide';
+import Ad from './components/Ad';
 
 import firebase from "firebase";
 import {
@@ -126,6 +127,7 @@ class App extends React.Component {
                   <div className="App">
                     <Header />
                     <Question page={selectedPage}></Question>
+                    <Ad />
                     <Navigation {...props} landingPage={isLandingPage} options={selectedPage.options} changePage={this.changePage} showBackBtn={this.state.pageHistory.length > 0} reset={this.reset} goBack={this.goBack}></Navigation>
                   </div>
                 ) : (<Redirect to={{
