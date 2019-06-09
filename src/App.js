@@ -127,7 +127,6 @@ class App extends React.Component {
                   <div className="App">
                     <Header />
                     <Question page={selectedPage}></Question>
-                    <Ad />
                     <Navigation {...props} landingPage={isLandingPage} options={selectedPage.options} changePage={this.changePage} showBackBtn={this.state.pageHistory.length > 0} reset={this.reset} goBack={this.goBack}></Navigation>
                   </div>
                 ) : (<Redirect to={{
